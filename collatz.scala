@@ -29,7 +29,7 @@ def collatzRec(n: Long, count: Int): Int = {
 def collatz_max(bnd: Int): (Int, Int) = {
 	var maxSteps = 0
 	var value = 0;
-	for(i <- 1 to bnd) 
+	for(i <- (1 to bnd).par) 
 		if (collatz(i) > maxSteps) {
 			maxSteps = collatz(i)
 			value = i 
