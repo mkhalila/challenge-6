@@ -26,6 +26,13 @@ def collatzRec(n: Long, count: Int): Int = {
 //     the maximum number of steps and the second is the 
 //     corresponding number.
 
-/*def collatz_max(bnd: Int): (Int, Int) = ...*/
-
-
+def collatz_max(bnd: Int): (Int, Int) = {
+	var maxSteps = 0
+	var value = 0;
+	for(i <- 1 to bnd) 
+		if (collatz(i) > maxSteps) {
+			maxSteps = collatz(i)
+			value = i 
+		}
+	(maxSteps, value)
+}
