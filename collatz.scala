@@ -9,8 +9,13 @@
 //    performs the recursion. The function should expect
 //    arguments in the range of 1 to 1 Million.
 
-def collatz(n: Long): ... = ...
+def collatz(n: Long): Int = collatzRec(n, 0)
 
+def collatzRec(n: Long, count: Int): Int = {
+	if (n == 1) count + 1
+	else if((n % 2) == 0) collatzRec(n/2, count + 1)
+	else collatzRec(3*n + 1, count + 1)
+}
 
 //(2)  Complete the collatz bound function below. It should
 //     calculuate how many steps are needed for each number 
@@ -21,6 +26,6 @@ def collatz(n: Long): ... = ...
 //     the maximum number of steps and the second is the 
 //     corresponding number.
 
-def collatz_max(bnd: Int): (Int, Int) = ...
+/*def collatz_max(bnd: Int): (Int, Int) = ...*/
 
 
