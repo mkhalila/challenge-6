@@ -70,12 +70,12 @@ def query_company(symbol: String): (String, String) = {
 
 // some more test cases
 
-val indices = List("GOOG", "AAPL", "MSFT", "IBM", "FB", "YHOO", "AMZN", "BIDU")
+/*val indices = List("GOOG", "AAPL", "MSFT", "IBM", "FB", "YHOO", "AMZN", "BIDU")
 
 for (name <- indices) {
   val times = query_company(name)
   println(s"Buy ${name} on ${times._1} and sell on ${times._2}")
-}
+}*/
 
 
 
