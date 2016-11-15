@@ -11,7 +11,6 @@ def trade_times(xs: List[Double]): (Int, Int) = {
 	val max = xs.indexOf( (xs.drop(min+1)).max )
 	(min, max)
 }
-
 // an example
 /*val prices = List(28.0, 18.0, 20.0, 26.0, 24.0)
 assert(trade_times(prices) == (1, 3), "the trade_times test fails")*/
@@ -43,28 +42,40 @@ def process_page(symbol: String): List[(String, Double)] = {
 		val x = list3
 		list3 = (list2(0), list2(6).toDouble)::x
 	}
-	list3.reverse.drop(1)
+	list3.reverse.drop(1).reverse
 }
 
 // (4) Complete the query_company function that obtains the
 // processed CSV-list for a stock symbol. It should return
 // the dates for when to buy and sell the stocks of that company.
-
-/*def query_company(symbol: String): (String, String) =*/
-
+import scala.util._
+def query_company(symbol: String): (String, String) = {
+	val datesAndPrices = process_page(symbol)
+	var prices = List(1.0)
+	for( i <- (0 until datesAndPrices.length)) {
+		val x = prices
+		prices = datesAndPrices(i)._2 :: x
+	}
+	prices = prices.reverse.drop(1)
+	val buy = trade_times(prices)._1
+	val sell = trade_times(prices)._2
+	val buyDate = datesAndPrices(buy)._1
+	val sellDate = datesAndPrices(sell)._1
+	(buyDate, sellDate)
+}
 
 // some test cases
 
 //query_comp("GOOG")
 
 // some more test cases
-/*
+
 val indices = List("GOOG", "AAPL", "MSFT", "IBM", "FB", "YHOO", "AMZN", "BIDU")
 
 for (name <- indices) {
-  val times = query_comp(name)
+  val times = query_company(name)
   println(s"Buy ${name} on ${times._1} and sell on ${times._2}")
 }
-*/
+
 
 
