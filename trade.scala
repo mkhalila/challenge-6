@@ -24,8 +24,12 @@ assert(trade_times(prices) == (1, 3), "the trade_times test fails")*/
 // 
 // This servive returns a CSV-list that needs to be separated into
 // a list of strings.
-
-/*def get_page(symbol: String): List[String] = ...*/
+import io.Source
+import scala.util.matching.Regex
+def get_page(symbol: String): List[String] = {
+	val url = "http://ichart.yahoo.com/table.csv?s=" + symbol
+  	Source.fromURL(url).mkString.split("\n").toList
+}
 
 // (3) Complete the function that processes the CSV list
 // extracting the dates and anjusted close prices. The
