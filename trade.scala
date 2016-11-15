@@ -35,8 +35,16 @@ def get_page(symbol: String): List[String] = {
 // extracting the dates and anjusted close prices. The
 // prices need to be transformed into Doubles.
 
-/*def process_page(symbol: String): List[(String, Double)] = ...*/
-
+def process_page(symbol: String): List[(String, Double)] = {
+	val list = get_page(symbol).drop(1)
+	var list3 = List(("", 1.0))
+	for( i <- list ) {
+		val list2 = i.split(",").toList
+		val x = list3
+		list3 = (list2(0), list2(6).toDouble)::x
+	}
+	list3.reverse.drop(1)
+}
 
 // (4) Complete the query_company function that obtains the
 // processed CSV-list for a stock symbol. It should return
