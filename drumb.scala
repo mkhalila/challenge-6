@@ -18,11 +18,18 @@ import io.Source
 import scala.util.matching.Regex
 def get_first_price(symbol: String, year: Int): Option[Double] = {
 	val url = "http://ichart.yahoo.com/table.csv?s=" + symbol + "&a=0&b=1&c=" + year + "&d=1&e=1&f=" + year
-  	val listStrings = Source.fromURL(url).mkString.split("\n").toList
-  	val firstTrade = listStrings(1).split(",").toList
-  	val adjPrice = firstTrade(6).toDouble
-  	Option(adjPrice)
+	try { 
+		val listStrings = Source.fromURL(url).mkString.split("\n").toList
+  		val firstTrade = listStrings(1).split(",").toList
+  		val adjPrice = firstTrade(6).toDouble
+  		return Option(adjPrice)
+	} catch {
+		case e: Exception => println(s"  Problem with: $url")
+	}
+	None
 }
+
+println(get_first_price("GOOGkasc", 2011))
 
 // Complete the function below that obtains all first prices
 // for the stock symbols from a portfolio for the given
