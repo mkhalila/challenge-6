@@ -29,17 +29,25 @@ def get_first_price(symbol: String, year: Int): Option[Double] = {
 	None
 }
 
-println(get_first_price("GOOGkasc", 2011))
-
 // Complete the function below that obtains all first prices
 // for the stock symbols from a portfolio for the given
 // range of years
 
-/*def get_prices(portfolio: List[String], years: Range): List[List[Option[Double]]] = ...*/
+def get_prices(portfolio: List[String], years: Range): List[List[Option[Double]]] = {
+	var outerList = List[List[Option[Double]]]()
+	for( j <- years) {
+		var innerList = List[Option[Double]]()
+		for( i <- portfolio) {
+			innerList ::= get_first_price(i, j) 
+		}
+		outerList ::= innerList.reverse
+	}
+	outerList.reverse
+}
 
 // test case
-//val p = get_prices(List("GOOG", "AAPL"), 2010 to 2012)
-
+/*val p = get_prices(List("GOOG", "AAPL"), 2010 to 2012)
+println(p)*/
 
 // (2) The first function below calculates the change factor (delta) between
 // a price in year n and a price in year n+1. The second function calculates
