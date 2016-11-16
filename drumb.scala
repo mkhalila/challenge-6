@@ -46,16 +46,18 @@ def get_prices(portfolio: List[String], years: Range): List[List[Option[Double]]
 }
 
 // test case
-/*val p = get_prices(List("GOOG", "AAPL"), 2010 to 2012)
-println(p)*/
+val p = get_prices(List("GOOG", "AAPL"), 2010 to 2012)
+println(p)
 
 // (2) The first function below calculates the change factor (delta) between
 // a price in year n and a price in year n+1. The second function calculates
 // all change factors for all prices (from a portfolio).
 
-/*def get_delta(price_old: Option[Double], price_new: Option[Double]): Option[Double] = ...
+def get_delta(price_old: Option[Double], price_new: Option[Double]): Option[Double] = {
+	Option((price_new.get - price_old.get)/price_old.get)
+}
 
-def get_deltas(data: List[List[Option[Double]]]):  List[List[Option[Double]]] = ...*/
+/*def get_deltas(data: List[List[Option[Double]]]):  List[List[Option[Double]]] = ...*/
 
 // test case using the prices calculated above
 //val d = get_deltas(p)
