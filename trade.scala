@@ -12,8 +12,8 @@ def trade_times(xs: List[Double]): (Int, Int) = {
 	(min, max)
 }
 // an example
-/*val prices = List(28.0, 18.0, 20.0, 26.0, 24.0)
-assert(trade_times(prices) == (1, 3), "the trade_times test fails")*/
+val prices = List(28.0, 18.0, 20.0, 26.0, 24.0)
+assert(trade_times(prices) == (1, 3), "the trade_times test fails")
 
 
 // (2) Complete the ``get webpage'' function that takes a
@@ -66,16 +66,16 @@ def query_company(symbol: String): (String, String) = {
 
 // some test cases
 
-//query_comp("GOOG")
+query_company("GOOG")
 
 // some more test cases
 
-/*val indices = List("GOOG", "AAPL", "MSFT", "IBM", "FB", "YHOO", "AMZN", "BIDU")
+val indices = List("GOOG", "AAPL", "MSFT", "IBM", "FB", "YHOO", "AMZN", "BIDU")
 
 for (name <- indices) {
   val times = query_company(name)
   println(s"Buy ${name} on ${times._1} and sell on ${times._2}")
-}*/
+}
 
 
 
