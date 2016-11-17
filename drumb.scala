@@ -19,8 +19,8 @@ import scala.util.matching.Regex
 def get_first_price(symbol: String, year: Int): Option[Double] = {
 	val url = "http://ichart.yahoo.com/table.csv?s=" + symbol + "&a=0&b=1&c=" + year + "&d=1&e=1&f=" + year
 	try { 
-		val listStrings = Source.fromURL(url).mkString.split("\n").toList
-  		val firstTrade = listStrings(1).split(",").toList
+		val listStrings = Source.fromURL(url).mkString.split("\n").toList.reverse
+  		val firstTrade = listStrings(0).split(",").toList
   		val adjPrice = firstTrade(6).toDouble
   		return Option(adjPrice)
 	} catch {
@@ -57,10 +57,28 @@ def get_delta(price_old: Option[Double], price_new: Option[Double]): Option[Doub
 	Option((price_new.get - price_old.get)/price_old.get)
 }
 
-/*def get_deltas(data: List[List[Option[Double]]]):  List[List[Option[Double]]] = ...*/
+def get_deltas(data: List[List[Option[Double]]]):  List[List[Option[Double]]] = {
+	var deltas = List[List[Option[Double]]]()
+    var list = List[Option[Double]]()
+    var innerList = List[Option[Double]]()
+    var nextList = List[Option[Double]]()
+
+    for( innerListIndex <- 0 until data.size-1) {
+    	for( i <- 0 until data(innerListIndex).size) {
+    		innerList = data(innerListIndex)
+    		nextList = data(innerListIndex + 1)
+    		list ::= get_delta(innerList(i), nextList(i))
+    	}
+    	deltas ::= list.reverse
+    	list = List[Option[Double]]()
+    }
+	deltas.reverse
+}
+
+println(get_deltas(get_prices(List("GOOG", "AAPL"), 2010 to 2012)))
 
 // test case using the prices calculated above
-//val d = get_deltas(p)
+val d = get_deltas(p)
 
 
 // (3) Write a function that given change factors, a starting balance and a year
@@ -70,12 +88,23 @@ def get_delta(price_old: Option[Double], price_new: Option[Double]): Option[Doub
 // calculations by taking a portfolio, a range of years and a start balance
 // as arguments.
 
-/*def yearly_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Long = ... 
+def yearly_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Long = {
+	val yearList = data(year)
+	val size = yearList.size
+	val amountPerStock = balance/size
+	var investmentYield = amountPerStock * yearList(0).get
+	for( i <- 1 until size) {
+		investmentYield += amountPerStock * yearList(i).get
+	} 
+	val newBalance = balance + investmentYield.toLong
+	println(newBalance)
+	newBalance
+}
 
 //test case
-//yearly_yield(d, 100, 0)
+yearly_yield(d, 100, 0)
 
-def compound_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Long = ... 
+/*def compound_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Long = ... 
 
 def investment(portfolio: List[String], years: Range, start_balance: Long): Long = ...*/
 
