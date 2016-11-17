@@ -93,12 +93,9 @@ def yearly_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Lo
 	val size = yearList.size
 	val amountPerStock = balance/size
 	var investmentYield = amountPerStock * yearList(0).get
-	for( i <- 1 until size) {
-		investmentYield += amountPerStock * yearList(i).get
-	} 
-	val newBalance = balance + investmentYield.toLong
-	println(newBalance)
-	newBalance
+	for( i <- 1 until size) 
+		yield investmentYield += amountPerStock * yearList(i).get
+	balance + investmentYield.toLong
 }
 
 //test case
