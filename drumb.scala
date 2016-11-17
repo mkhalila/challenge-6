@@ -107,8 +107,16 @@ def yearly_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Lo
 //test case
 yearly_yield(d, 100, 0)
 
-/*def compound_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Long = ... 
+def compound_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Long = {
+	var newBalance = balance;
+	for( i <- 0 until year) {
+		newBalance = yearly_yield(data, newBalance, i)
+	}
+	newBalance
+}
 
+println(compound_yield(d, 100, 2))
+/*
 def investment(portfolio: List[String], years: Range, start_balance: Long): Long = ...*/
 
 
