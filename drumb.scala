@@ -24,8 +24,7 @@ def get_first_price(symbol: String, year: Int): Option[Double] = {
   		val adjPrice = firstTrade(6).toDouble
   		return Option(adjPrice)
 	} catch {
-		case e: Exception => /*println(s"  Problem with: $url")*/
-		return None
+		case e: Exception => return None
 	}
 	None
 }
@@ -38,9 +37,9 @@ def get_prices(portfolio: List[String], years: Range): List[List[Option[Double]]
 	var outerList = List[List[Option[Double]]]()
 	for( j <- years) {
 		var innerList = List[Option[Double]]()
-		for( i <- portfolio) {
+		for( i <- portfolio) 
 			innerList ::= get_first_price(i, j) 
-		}
+		
 		outerList ::= innerList.reverse
 	}
 	outerList.reverse
@@ -48,16 +47,16 @@ def get_prices(portfolio: List[String], years: Range): List[List[Option[Double]]
 
 // test case
 val p = get_prices(List("GOOG", "AAPL"), 2010 to 2012)
-println(p)
+
 
 // (2) The first function below calculates the change factor (delta) between
 // a price in year n and a price in year n+1. The second function calculates
 // all change factors for all prices (from a portfolio).
 
 def get_delta(price_old: Option[Double], price_new: Option[Double]): Option[Double] = {
-	if((price_new != None) && (price_old != None)) {
+	if((price_new != None) && (price_old != None)) 
 		return Option((price_new.get - price_old.get)/price_old.get)
-	}
+	
 	None
 }
 
@@ -79,8 +78,6 @@ def get_deltas(data: List[List[Option[Double]]]):  List[List[Option[Double]]] = 
 	deltas.reverse
 }
 
-println(get_deltas(get_prices(List("GOOG", "AAPL"), 2010 to 2012)))
-
 // test case using the prices calculated above
 val d = get_deltas(p)
 
@@ -97,11 +94,9 @@ def yearly_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Lo
 	var size = 0
 	var investmentYield = 0.0
 
-	for( j <- yearList) {
-		if(j != None){
+	for( j <- yearList) 
+		if(j != None)
 			size = size + 1
-		}
-	}
 
 	val amountPerStock = balance/size
 	
@@ -113,18 +108,15 @@ def yearly_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Lo
 }
 
 //test case
-println(yearly_yield(d, 100, 0))
+yearly_yield(d, 100, 0)
 
 def compound_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Long = {
 	var newBalance = balance;
-	for( i <- 0 until year) {
+	for( i <- 0 until year) 
 		newBalance = yearly_yield(data, newBalance, i)
-	}
+	
 	newBalance
 }
-
-println(compound_yield(d, 100, 2))
-
 
 def investment(portfolio: List[String], years: Range, start_balance: Long): Long = {
 	val z = get_deltas(get_prices(portfolio, years))
@@ -133,6 +125,5 @@ def investment(portfolio: List[String], years: Range, start_balance: Long): Long
 
 
 //test cases for the two portfolios given above
-println(investment(rstate_portfolio, 1978 to 2016, 100))
-println(investment(blchip_portfolio, 1978 to 2016, 100))
-
+investment(rstate_portfolio, 1978 to 2016, 100)
+investment(blchip_portfolio, 1978 to 2016, 100)
