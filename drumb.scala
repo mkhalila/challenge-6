@@ -24,7 +24,8 @@ def get_first_price(symbol: String, year: Int): Option[Double] = {
   		val adjPrice = firstTrade(6).toDouble
   		return Option(adjPrice)
 	} catch {
-		case e: Exception => println(s"  Problem with: $url")
+		case e: Exception => /*println(s"  Problem with: $url")*/
+		return None
 	}
 	None
 }
@@ -54,7 +55,10 @@ println(p)
 // all change factors for all prices (from a portfolio).
 
 def get_delta(price_old: Option[Double], price_new: Option[Double]): Option[Double] = {
-	Option((price_new.get - price_old.get)/price_old.get)
+	if((price_new != None) && (price_old != None)) {
+		return Option((price_new.get - price_old.get)/price_old.get)
+	}
+	None
 }
 
 def get_deltas(data: List[List[Option[Double]]]):  List[List[Option[Double]]] = {
@@ -90,14 +94,18 @@ val d = get_deltas(p)
 
 def yearly_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Long = {
 	val yearList = data(year)
-	val size = yearList.size
-	val amountPerStock = balance/size
+	var size = 0
 	var investmentYield = 0.0
 
-	if (yearList(0) != None)
-		investmentYield = amountPerStock * yearList(0).get
+	for( j <- yearList) {
+		if(j != None){
+			size = size + 1
+		}
+	}
+
+	val amountPerStock = balance/size
 	
-	for( i <- 1 until size) 
+	for( i <- 0 until yearList.size) 
 		if (yearList(i) != None) 
 			investmentYield += amountPerStock * yearList(i).get
 
@@ -105,7 +113,7 @@ def yearly_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Lo
 }
 
 //test case
-yearly_yield(d, 100, 0)
+println(yearly_yield(d, 100, 0))
 
 def compound_yield(data: List[List[Option[Double]]], balance: Long, year: Int): Long = {
 	var newBalance = balance;
@@ -116,11 +124,15 @@ def compound_yield(data: List[List[Option[Double]]], balance: Long, year: Int): 
 }
 
 println(compound_yield(d, 100, 2))
-/*
-def investment(portfolio: List[String], years: Range, start_balance: Long): Long = ...*/
+
+
+def investment(portfolio: List[String], years: Range, start_balance: Long): Long = {
+	val z = get_deltas(get_prices(portfolio, years))
+	compound_yield(z, start_balance, years.end - years.start)
+}
 
 
 //test cases for the two portfolios given above
-//investment(rstate_portfolio, 1978 to 2016, 100)
-//investment(blchip_portfolio, 1978 to 2016, 100)
+println(investment(rstate_portfolio, 1978 to 2016, 100))
+println(investment(blchip_portfolio, 1978 to 2016, 100))
 
