@@ -22,11 +22,10 @@ def get_first_price(symbol: String, year: Int): Option[Double] = {
 		val listStrings = Source.fromURL(url).mkString.split("\n").toList.reverse
   		val firstTrade = listStrings(0).split(",").toList
   		val adjPrice = firstTrade(6).toDouble
-  		return Option(adjPrice)
+  		Option(adjPrice)
 	} catch {
-		case e: Exception => return None
+		case e: Exception => None
 	}
-	None
 }
 
 // Complete the function below that obtains all first prices
@@ -55,9 +54,8 @@ val p = get_prices(List("GOOG", "AAPL"), 2010 to 2012)
 
 def get_delta(price_old: Option[Double], price_new: Option[Double]): Option[Double] = {
 	if((price_new != None) && (price_old != None)) 
-		return Option((price_new.get - price_old.get)/price_old.get)
-	
-	None
+		Option((price_new.get - price_old.get)/price_old.get)
+	else None
 }
 
 def get_deltas(data: List[List[Option[Double]]]):  List[List[Option[Double]]] = {
