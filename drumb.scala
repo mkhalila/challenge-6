@@ -123,5 +123,5 @@ def investment(portfolio: List[String], years: Range, start_balance: Long): Long
 
 
 //test cases for the two portfolios given above
-println(investment(rstate_portfolio, 1978 to 2016, 100))
-println(investment(blchip_portfolio, 1978 to 2016, 100))
+investment(rstate_portfolio, 1978 to 2016, 100)
+investment(blchip_portfolio, 1978 to 2016, 100)
